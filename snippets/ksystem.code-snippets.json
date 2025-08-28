@@ -1,0 +1,159 @@
+{
+  "Screen Template": {
+    "prefix": "scr",
+    "body": [
+      "SCREEN ${TM_FILENAME_BASE/(sct)([0-9]+)/$2/} ${1:QUERY_TYPE|APP_TYPE|MENU_TYPE|REPORT_TYPE} ${2:s.ProgramName}",
+      "    IMAGE(master)",
+      "    FIELD(master)",
+      "    EDITS(master)",
+      "    MAP(mymap)",
+      "    CALCS()",
+      "    HOOKS(master)",
+      "    PERMIT(master)",
+      "END_SCREEN"
+    ],
+    "description": "Basic screen template (auto number from filename)"
+  },
+
+  "Map Block": {
+    "prefix": "map",
+    "body": [
+      "MAP(${1:MapName})",
+      "    ${2:Field1} ${3:TargetField} ${4:REPLACE}"
+    ],
+    "description": "MAP block with source and target fields"
+  },
+
+  "Calc Block": {
+    "prefix": "calc",
+    "body": [
+      "CALCS()",
+      "    ${1:CalcName} "
+    ],
+    "description": "CALCS block"
+  },
+
+  "Hook After Input (DO_MAP)": {
+    "prefix": "hookmap",
+    "body": [
+      "AFTER_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}"
+    ],
+    "description": "HOOKS rule AFTER_INPUT with DO_MAP SHOW"
+  },
+
+  "Hook After Input (DO_LIB)": {
+    "prefix": "hooklib",
+    "body": [
+      "AFTER_INPUT cur_field=${1:FieldName} DO_LIB ${2:LibName}(${3:params})"
+    ],
+    "description": "HOOKS rule AFTER_INPUT with DO_LIB"
+  },
+
+  "Hook Before Input (DO_MAP)": {
+    "prefix": "bmap",
+    "body": [
+      "BEFORE_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}"
+    ],
+    "description": "HOOKS rule BEFORE_INPUT with DO_MAP SHOW"
+  },
+
+  "After Input Hooks": {
+    "prefix": "after_",
+    "body": [
+      "AFTER_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}"
+    ]
+  },
+
+  "Before Input Hooks": {
+    "prefix": "before_",
+    "body": [
+      "BEFORE_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}"
+    ]
+  },
+
+  "Hook Condition Example": {
+    "prefix": "hookif",
+    "body": [
+      "AFTER_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}",
+      "    IF ${3:condition}",
+      "    ELSE HKCURSOR STAY",
+      "    HKMSG ${4:Message}"
+    ],
+    "description": "HOOKS example with IF/ELSE and HKMSG"
+  },
+
+  "Permit Block": {
+    "prefix": "permit",
+    "body": [
+      "PERMIT(${1:master})",
+      "    ${2:PMT_ADD_COND|PMT_UPDALL_COND|PMT_DEL_COND} ${3:CalcName}"
+    ],
+    "description": "PERMIT block for permissions"
+  },
+
+  "Local Vars": {
+    "prefix": "local",
+    "body": [
+      "LOCAL",
+      "PGM_FIELDS",
+      "    ${1:varname} ${2:STRING|DATE|INT2|DFLOAT} ${3:panjang}"
+    ],
+    "description": "LOCAL variables declaration"
+  },
+
+  "FIELD": {
+    "prefix": "field",
+    "body": [
+      "FIELD(${1:master})",
+      "${2:FieldName} ${3:ALLCAPS|PROTECT|DIGITS|NONE} ${4:SCROLL|NONE} ${5:INPUTRI|RI|NONE} ${6:1}"
+    ]
+  },
+
+  "Default Block": {
+    "prefix": "def",
+    "body": [
+      "DEFAULT",
+      "    ${1:FieldName} = ${2:DefaultValue}"
+    ],
+    "description": "DEFAULT block to set default values"
+  },
+
+  "Help Block": {
+    "prefix": "help",
+    "body": [
+      "HELP",
+      "    \"${1:Help text for this screen or field}\""
+    ],
+    "description": "HELP block"
+  },
+
+  "Form Template": {
+    "prefix": "form",
+    "body": [
+      "IMAGE(${1:master})",
+      "/------------------------------------\\",
+      "|| ${2:t.Field1}   :________________ ||",
+      "|| ${3:t.Field2}   :________________ ||",
+      "|| ${4:t.Field3}   :________________ ||",
+      "|| ${5:t.Field4}   :________________ ||",
+      "\\------------------------------------/"
+    ],
+    "description": "Template for IMAGE + ASCII form fields"
+  },
+
+  "Field Row": {
+    "prefix": "fld",
+    "body": [
+      "|| ${1:t.Field}   :________________ ||"
+    ],
+    "description": "Single row field inside IMAGE form"
+  },
+
+  "Block Comment": {
+    "prefix": "cmt",
+    "body": [
+      "/* ${1:komentar} */"
+    ],
+    "description": "Insert a block comment"
+  }
+}

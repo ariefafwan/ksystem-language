@@ -1,0 +1,34 @@
+{
+  "name": "ksystem-language",
+  "displayName": "K-System Language",
+  "description": "Syntax highlighting & snippets for K-System programs",
+  "version": "0.0.1",
+  "publisher": "teukuafwan",
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "contributes": {
+    "languages": [
+      {
+        "id": "ksystem",
+        "aliases": ["K-System", "ksys"],
+        "filenames": [],
+        "extensions": [],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ksystem",
+        "scopeName": "source.ksys",
+        "path": "./syntaxes/ksystem.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "ksystem",
+        "path": "./snippets/ksystem.code-snippets.json"
+      }
+    ]
+  }
+}

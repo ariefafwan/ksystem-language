@@ -1,0 +1,60 @@
+// screen build & register
+kspar -n -l prt9000/sct<nomorscreen> => perintah tiap ada ubah update screen
+ksgen -x9000 => tiap buat screen baru
+
+// varibel global
+g_tgltrn = tanggal hari ini 
+g_usrkode = nip login 
+g_grpnam = group login
+
+// calcs func
+ap_akhbl(g_tgltrn) => fungsi mencari akhir bulan
+ap_tambl(g_tgltrn, 'var jumlah bulan') => fungsi menambah bulan
+THBLS_YY(g_tgltrn) => fungsi mengambil tahun ini, misal 2025 maka akan 25, fungsi ini tanpa DO_LIB
+
+
+// DBCALCS
+sebuah tempat untuk membuat logika ke tabel lain, entah itu posting atau join ke table lain. jika posting, maka akan di panggil melalui spcalcs
+contoh untuk posting :
+
+DBCALCS(dbcpostingpsd)
+        DBC_COMMAND ADD
+        DBC_FILE    psd
+        DBC_MAP     mappostingpsd
+
+contoh untuk join :
+DBCALCS(djoincon)
+        DBC_COMMAND     JOIN
+        DBC_TARGET      condathpidx     lEMAIL tlmplg
+        DBC_MAP         mcon
+
+
+//spcalcs func
+ap_dblcl(DNAME <namadbc>, DCOMMAND <commanddlc>, DFILE <filetarget>, DMAP <map target>)
+
+// terminal
+vi posting.h = lihat semua kode tabel
+vi <nmatabel>.h = lihat field field dalam tabel
+vi prg/gv.var
+aphelp all
+aphelp <namaap>
+vi prt9000/gt.var melihat global variabel tambahan
+grep DBC_SELECT prt9000/sct* => DBC_SELECT bisa di ganti, ini untuk lihat contoh pakai di screen lain
+vi dbprt cek database
+home/upload = dir upload file
+vi prt9000/scan/{namaScannyaapa} // untuk melihat scan
+
+// screen screen dasar & function key
+3007 untuk daftarin xml
+3002 untuk daftar akun baru
+3105 untuk menambahkan cabang
+110 ganti tanggal hari ini
+3013 untuk daftarin template
+3001 group dan proteksi group dan no urut approval
+4084 MELIHAT AMBANG BATAS
+102 untuk menjalankan approval
+194 untuk melihat flow bisnis
+121 untuk mengatur master approval
+f4 untuk cari var lokal
+f3 cek namafield dari database apakah ada atau tidak
+f6 informasi file master

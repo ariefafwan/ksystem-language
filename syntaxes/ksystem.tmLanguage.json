@@ -1,0 +1,43 @@
+{
+  "scopeName": "source.ksys",
+  "patterns": [
+    {
+      "match": "\\b(SCREEN|END_SCREEN)\\b",
+      "name": "keyword.declaration.ksys"
+    },
+    {
+      "match": "\\b(IMAGE|FIELD|EDITS|LOCAL|SPCALCS|MAP|CALCS|DBCALCS|HOOKS|PERMIT|POSTING|HELP|DEFAULT)\\b",
+      "name": "keyword.control.ksys"
+    },
+    {
+      "match": "\\b(MENU_TYPE|QUERY_TYPE|APP_TYPE|REPORT_TYPE)\\b",
+      "name": "storage.type.ksys"
+    },
+    {
+      "match": "\\b(NUMERIC|ALLCAPS|PROTECT|DFLOAT|DIGITS|NONE|STRING|INT2|DATE|INPUTRI|NOCHANGE|RI|BIG|TABLE|MANDATORY|VALIDATE|MANDATORY_IF|REPLACE|DO_CALC|REPLACE_IF|DFALT_SCAN|INIT|DFALT_RADIO_BUTTON|DUPKEY|UPDATE|DO_MAP|IF|ELSE|SHOW|HKMSG|cur_field|DO_LIB|cur_keybd|DO_CALC_IF)\\b",
+      "name": "constant.language.ksys"
+    },
+    {
+      "match": "\".*?\"",
+      "name": "string.quoted.ksys"
+    },
+    {
+      "begin": "/\\*",
+      "end": "\\*/",
+      "name": "comment.block.ksys"
+    },
+    {
+      "begin": "^[\\\\/|\\-]+",
+      "end": "$",
+      "name": "string.unquoted.form.ksys"
+    },
+    {
+      "match": "_{2,}",
+      "name": "variable.other.field.ksys"
+    },
+    {
+      "match": "^(\\s*(?!IF\\b|ELSE\\b|SHOW\\b|HKMSG\\b|DO_LIB\\b|DO_MAP\\b|DO_CALC\\b|DO_CALC_IF\\b|REPLACE\\b)[A-Za-z0-9_]+)",
+      "name": "entity.name.function.ksys"
+    }
+  ]
+}

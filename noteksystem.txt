@@ -1,0 +1,110 @@
+// local
+local ini adalah tempat menyimpan varibel lokal, artinya variabel yang tidak disimpan di database, atau tidak ada field nya di database, maka harus di simpan di lokal
+setiap variabel lokal dapat di cek nilai atau value nya di f4. semua variabel wajib di gunakan ya, mau local maupun field.
+
+// semua form ditulis di dalam image
+contoh :
+IMAGE(master)
+/----------------------------\
+|/--------------------------\|
+||t.Nip	   :________________||
+||t.Sts	   :________________||
+||t.Nama   :________________||
+||t.Cabang :_____  _________||
+||t.waktu  :________________||
+||t.hasil  :________________||
+|\--------------------------/|
+\----------------------------/
+
+// field
+field ini harus sesuai dengan form, sampai dengan urutannya pun harus sesuai, format penulisannya :
+tldprm 		ALLCAPS SCROLL 		BIG 1
+tldsat		PROTECT 		INPUTRI 2
+
+Allcaps artinya semu field ini akan menjadi huruf besar ketika di ketik di dalam form
+protect maka dia akan disable untuk di isi, bisanya sudah ada isian default nya
+NUMERIC 		- Hanya angka yang diterima
+FRSWORDCAPS 	- Huruf pertama dari kata PERTAMA diubah menjadi huruf besar
+BIG artinya tampilan di form nya akan lebar, sedangkan inputri itu adalah input seperti biasnya aja yang ada kursor di dalamnya, selain itu juga ada ri yang input jug seperti biasa tapi tanpa kursur input dalamnya.
+angka setelahnya itu adalah urutan seperti biasa, yang menandakan pointer urutan input form, jadi ketika di tekan tab, maka akan beralih dari input pertama ke input ke dua misalnya.
+
+// edit
+edit ini adalah tempat membuat validasi dari formuser
+
+// map
+map ini adalah tempat manipulasi nilai input user, bisa melalui calcs atau melalui map itu sendiri, tetapi jika merupakan operasi, maka harus melalui calcs. Nama map harus diawali dengan huruf 'm'.
+MAP(namaMap)
+    Field awal/perhitungan      field tujuan      tipe
+contoh:
+MAP(mcoba)
+    ppmsts       plgsts         REPLACE
+    ctotal       plgtotal       DO_CALC
+    ppmsts       plgsts         REPLACE_IF cstsok
+    ctotal       plgtotal       DO_CALC_IF cstsok
+
+// calcs func
+calcs ini adalah tempat menulis suatu hasil nilai yang telah di manipulasi, yang selanjutnya bisa di gunakan di map atau di hook, atau bahkan di default field
+calcs ini bisa do_lib atau tidak, do_lib itu ketika ada library nya ksystem
+
+// hooks func
+tempat validasi kedua, dan juga tempat kedua membuat nilai default, isi nya ada 2, BEFORE_INPUT & AFTER_INPUT
+BEFORE_INPUT ini untuk adalah nilai, yang akan dikirim kan ke suatu field, sebelum sebuah field di isi, tetapi manipulasi nya tetap di calcs
+contoh :
+CALCS()
+ckode THBLS_YY(g_tgltrn)
+
+MAP(mkode)
+ckode psmkode DO_CALC
+
+HOOKS(master)
+BEFORE_INPUT cur_field=psmktp DO_MAP SHOW mkode
+
+dalam contoh itu dapat dilihat bahwa hooks ini akan melihat ke field psmktp yang mana sebelum dia di input, maka field psmkode akan terisi otomatis
+
+AFTER_INPUT, konsep nya sama seperti before input, tetapi di sini selain bisa merubah suatu nilai, juga bisa melakukan validasi pada suatu field.
+contoh :
+CALCS()
+chari psmtgl - psmtgllahir
+cboleh lhari > 6205
+cpanjangkode lpanjang == 16
+ckode  THBLS_YY(g_tgltrn)
+
+MAP(mhari)
+chari lhari DO_CALC
+
+MAP(mdum)
+ldum    ldum    REPLACE
+
+MAP(mpanjang)
+cpanjang lpanjang DO_CALC
+
+HOOKS(master)
+AFTER_INPUT cur_field=psmtgllahir DO_MAP SHOW mhari
+AFTER_INPUT cur_field=psmtgllahir DO_MAP SHOW
+            IF cboleh mdum
+            ELSE HKCURSOR STAY
+            HKMSG USIA DIBAWAH 17 NIH
+AFTER_INPUT cur_field=psmktp DO_MAP SHOW mpanjang
+AFTER_INPUT cur_field=psmktp     DO_MAP SHOW
+            IF cpanjangkode mdum
+            ELSE HKCURSOR STAY
+            HKMSG NO KTP KURANG PANJANG
+
+
+// permit
+permit ini adalah sebuah tempat membuat permission dalam mengisi form, misal saat update, kita ingin dia hanya bisa update ketika data nya itu bertatus OPEN, selain itu maka tidak bisa, maka pakai permit.
+contoh :
+CALCS()
+cOPENok  psmsts=="OPEN" && psmdf1 == 0
+cOPEN1   psmsts != "OPEN"
+cOPEN2   psmsts=="OPEN" && psmdf1 > 0
+caman    psmsts=="OPEN"
+
+PERMIT(master)
+        PMT_UPDALL_COND caman
+        PMT_DEL_COND cOPENok
+        PMT_DEL_MSG IF cOPEN1   Status tidak OPEN
+                    IF cOPEN2   hapus gambar dulu
+
+// posting
+
