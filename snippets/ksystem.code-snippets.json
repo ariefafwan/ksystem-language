@@ -3,12 +3,26 @@
     "prefix": "scr",
     "body": [
       "SCREEN ${TM_FILENAME_BASE/(sct)([0-9]+)/$2/} ${1:QUERY_TYPE|APP_TYPE|MENU_TYPE|REPORT_TYPE} ${2:s.ProgramName}",
+      "SCR_FILE ${3:name_of_master_file}",
+      "SCR_LOGFLD ${4:logfield}",
+      "SCR_NXT_POSTING_IF ${5:layarPosting}",
+      "SCR_NXT_MSG IF ${6:calccondition} ${7:Message}",
+      "            IF ${8:calccondition} ${9:Message}",
+      "SCR_NEXT_MAP ${10:mapPosting}",
+      "SCR_APR ${11:calcdolib}",
+      "SCR_APRFLD ${12:fieldname}",
+      "SCR_APR_COND ${13:calccondition}",
+      "SCR_APR_MSG IF ${14:calccondition} ${15:Message}",
+      "            IF ${16:calccondition} ${17:Message}",
       "    IMAGE(master)",
       "    FIELD(master)",
       "    EDITS(master)",
       "    MAP(mymap)",
       "    CALCS()",
       "    HOOKS(master)",
+      "    DBCALCS(master)",
+      "    SPCALCS(master)",
+      "    POSTING(master)",
       "    PERMIT(master)",
       "END_SCREEN"
     ],
@@ -19,7 +33,7 @@
     "prefix": "map",
     "body": [
       "MAP(${1:MapName})",
-      "    ${2:Field1} ${3:TargetField} ${4:REPLACE}"
+      "    ${2:FieldORCalcs} ${3:TargetField} ${4:REPLACE|REPLACE_IF|DO_CALC|DO_CALC_IF}"
     ],
     "description": "MAP block with source and target fields"
   },
@@ -91,6 +105,14 @@
     "description": "PERMIT block for permissions"
   },
 
+  "ap_dbclc Template": {
+    "prefix": "ap_dbclc",
+    "body": [
+      "DO_LIB ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:ADD|UPDATE}, DFILE ${4:filename}, DMAP ${5:mapnyaapa);"
+    ],
+    "description": "ap_dbclc template for spcalcs"
+  },
+
   "Local Vars": {
     "prefix": "local",
     "body": [
@@ -112,8 +134,8 @@
   "Default Block": {
     "prefix": "def",
     "body": [
-      "DEFAULT",
-      "    ${1:FieldName} = ${2:DefaultValue}"
+      "DEFAULT(${1:master})",
+      "    ${2:FieldName} = ${3:DefaultValue}"
     ],
     "description": "DEFAULT block to set default values"
   },
@@ -121,8 +143,8 @@
   "Help Block": {
     "prefix": "help",
     "body": [
-      "HELP",
-      "    \"${1:Help text for this screen or field}\""
+      "HELP(${1:master})",
+      "    \"${1:Help text for this field}\" ${2:FieldName}"
     ],
     "description": "HELP block"
   },
@@ -147,6 +169,83 @@
       "|| ${1:t.Field}   :________________ ||"
     ],
     "description": "Single row field inside IMAGE form"
+  },
+
+  "SPCALCS Block": {
+    "prefix": "spcalc",
+    "body": [
+      "SPCALCS(${1:SpcalcName})",
+      "    ${1:dbcalcname|IF|DO_LIB|DO_LIB_IF}"
+    ],
+    "description": "SPCALCS block"
+  },
+
+  "DBCALCS Block": {
+    "prefix": "dbcalc",
+    "body": [
+      "DBCALCS(${1:DbcalcName})",
+      "    DBC_COMMAND ${2:ADD|UPDATE|DELETE|JOIN|JOIN_LAST_SFL}",
+      "    DBC_COND ${3:calccondition}",
+      "    DBC_FILE ${4:LibName}",
+      "    DBC_Target ${5:indexjoin}",
+      "    DBC_MAP ${6:mapname}"
+    ],
+    "description": "DBCALCS block"
+  },
+
+  "SCR_UPL Block": {
+    "prefix": "scrupl",
+    "body": [
+      "SCR_UPLFLD   ${1:fieldname}",
+      "SCR_UPLFLD2  ${2:fieldname2}",
+      "SCR_UPL_DIRFLD  ${3:dirfieldname}",
+      "SCR_UPLFLD_DBCALCS  ${4:DbcalcName}",
+      "SCR_UPL_DELCOND ${5:calccondition}"
+    ],
+    "description": "SCR_UPL block"
+  },
+
+  "POSTING Block": {
+    "prefix": "post",
+    "body": [
+      "POSTING(${1:master|trans})",
+      "    ${2:PST_ADDCMD|PST_UPDCMD|PST_DELCMD|PST_UPD_DET_COND|PST_SUB_ADDCMD} ${3:SpcalcName}"
+    ],
+    "description": "POSTING block"
+  },
+
+  "SUBFILE Block": {
+    "prefix": "sub",
+    "body": [
+      "SUBFILE(${1:transt})",
+      "    SF_LINES ${2:10|20|30}",
+      "    SFL_TITLE ${2:transt}",
+      "    SFL_COND ${3:calccondition}",
+      "    SFL_SORT_BY_FIELD ${3:sortfield}",
+      "    SFL_TRANS2_FIELD ${4:trans2field}",
+      "    SFL_MAP",
+      "        ${5:calcOrField} ${6:TargetField}",
+      "        ${7:calcOrField} ${8:TargetField}",
+      "        ${9:calcOrField} ${10:TargetField}",
+      "        ${11:calcOrField} ${12:TargetField}",
+      "    SFL_TEMPLATE ${5:template}"
+    ],
+    "description": "SUBFILE block"
+  },
+
+  "RTREE Block": {
+    "prefix": "rtree",
+    "body": [
+      "RTREE(${1:report})",
+      "    RT_COND ${2:calccondition}",
+      "    USES_SCRIPT ${2:LaporanName}",
+      "    RT_NXT_POSTING ${3:layarPosting}",
+      "    RT_NXT_MAP ${4:layarMap}",
+      "    RT_MAP ${5:layarHooks}",
+      "    RT_PRINT_BACKUP",
+      "    RT_XLSX"
+    ],
+    "description": "RTREE block for laporan"
   },
 
   "Block Comment": {

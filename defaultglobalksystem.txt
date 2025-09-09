@@ -2,6 +2,11 @@
 kspar -n -l prt9000/sct<nomorscreen> => perintah tiap ada ubah update screen
 ksgen -x9000 => tiap buat screen baru
 
+// uat akses di:
+https://172.16.1.98/
+2068738
+2068738Fikri
+
 // varibel global
 g_tgltrn = tanggal hari ini 
 g_usrkode = nip login 
@@ -47,14 +52,18 @@ vi prt9000/scan/{namaScannyaapa} // untuk melihat scan
 // screen screen dasar & function key
 3007 untuk daftarin xml
 3002 untuk daftar akun baru
+3005 untuk nambahin password
 3105 untuk menambahkan cabang
 110 ganti tanggal hari ini
 3013 untuk daftarin template
 3001 group dan proteksi group dan no urut approval
 4084 MELIHAT AMBANG BATAS
+3108 data provinsi
+3110 data kelurahan
 102 untuk menjalankan approval
 194 untuk melihat flow bisnis
 121 untuk mengatur master approval
 f4 untuk cari var lokal
 f3 cek namafield dari database apakah ada atau tidak
 f6 informasi file master
+f7 cek field

@@ -2,18 +2,17 @@ import * as vscode from "vscode";
 import * as prettier from "prettier";
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("KSystem formatter aktif 🚀");
+  console.log("K-System Language Extension aktif 🚀");
 
   const provider = vscode.languages.registerDocumentFormattingEditProvider("ksystem", {
     async provideDocumentFormattingEdits(document: vscode.TextDocument) {
       const text = document.getText();
 
-      // 🔹 contoh: pakai Prettier dengan config custom
-      const formatted = prettier.format(text, {
-        parser: "babel", // sementara pakai babel, nanti bisa custom parser
+      const formatted = await prettier.format(text, {
+        parser: "babel",
         semi: false,
         singleQuote: true,
-        tabWidth: 4,
+        tabWidth: 4
       });
 
       const firstLine = document.lineAt(0);

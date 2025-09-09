@@ -1,17 +1,24 @@
 {
   "name": "ksystem-language",
   "displayName": "K-System Language",
-  "description": "Syntax highlighting & snippets for K-System programs",
-  "version": "0.0.1",
+  "description": "Syntax highlighting, snippets, and formatting for K-System programs",
+  "version": "1.0.2",
   "publisher": "teukuafwan",
   "engines": {
-    "vscode": "^1.50.0"
+    "vscode": "^1.103.0"
   },
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:ksystem"
+  ],
   "contributes": {
     "languages": [
       {
         "id": "ksystem",
-        "aliases": ["K-System", "ksys"],
+        "aliases": [
+          "K-System",
+          "ksys"
+        ],
         "filenames": [],
         "extensions": [],
         "configuration": "./language-configuration.json"
@@ -29,6 +36,24 @@
         "language": "ksystem",
         "path": "./snippets/ksystem.code-snippets.json"
       }
+    ],
+    "formatters": [
+      {
+        "language": "ksystem"
+      }
     ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "dependencies": {
+    "prettier": "^3.6.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.11",
+    "@types/vscode": "^1.103.0",
+    "typescript": "^5.9.2"
   }
 }
