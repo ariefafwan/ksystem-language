@@ -140,7 +140,7 @@
     "body": [
       "LOCAL",
       "PGM_FIELDS",
-      "${1:varname} ${2:STRING|DATE|INT2|DFLOAT} ${3:panjang}"
+      "${1:varname} ${2:STRING} ${3:panjang}"
     ],
     "description": "LOCAL variables declaration"
   },
@@ -156,7 +156,7 @@
     "prefix": "field",
     "body": [
       "FIELD(${1:master})",
-      "${2:FieldName} ${3:ALLCAPS|PROTECT|DIGITS|NONE} ${4:SCROLL|NONE} ${5:INPUTRI|RI|NONE} ${6:1}"
+      "${2:FieldName} ${3:NONE} ${4:INPUTRI|RI|NONE} ${5:1}"
     ]
   },
 
@@ -204,7 +204,7 @@
     "prefix": "spcalc",
     "body": [
       "SPCALCS(${1:SpcalcName})",
-      "         ${2:dbcalcname|IF|DO_LIB|DO_LIB_IF}"
+      "         ${2:dbcalcname}"
     ],
     "description": "SPCALCS block"
   },
@@ -215,7 +215,6 @@
       "DBCALCS(${1:DbcalcName})",
       "         DBC_COMMAND ${2:ADD|UPDATE|DELETE|JOIN|MAPMAP|JOIN_LAST_SFL}",
       "         DBC_COND ${3:calccondition}",
-      "         DBC_FILE ${4:LibName}",
       "         DBC_TARGET ${5:indexjoin}",
       "         DBC_MAP ${6:mapname}"
     ],
@@ -238,9 +237,7 @@
     "prefix": "post",
     "body": [
       "POSTING(${1:master|trans})",
-      "         ${2:PST_ADDCMD} ${3:SpcalcName}",
-      "         ${3:PST_UPDCMD} ${5:spcalcname}",
-      "         ${4:PST_DELCMD} ${6:spcalcname}",
+      "         ${2:PST_COMMAND} ${3:SpcalcName}",
       "         ${8:PST_COND} ${9:calcond}"
     ],
     "description": "POSTING block"
@@ -250,8 +247,7 @@
     "prefix": "sub",
     "body": [
       "SUBFILE(${1:transt})",
-      "SFL_LINES ${2:5}",
-      "SFL_TITLE ${3:transt}",
+      "SFL_LINES(${2:5})",
       "SFL_COND ${4:calccondition}",
       "SFL_SELECT ${5:calcselect}",
       "SFL_TARGET ${6:namaindex}",
