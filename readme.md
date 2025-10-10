@@ -177,15 +177,14 @@ IMAGE(${1:master})
 **19 Spcalcs - spcalc**
 ```
 "SPCALCS(${1:SpcalcName})",
-      "         ${2:dbcalcname|IF|DO_LIB|DO_LIB_IF}"
+      "         ${2:dbcalcname}"
 ```
 
 **20 DBCALCS - dbcalc**
 ```
 DBCALCS(${1:DbcalcName}),
-    DBC_COMMAND ${2:ADD|UPDATE|DELETE|JOIN|MAPMAP|JOIN_LAST_SFL}
+    DBC_COMMAND ${2:JOIN}
     DBC_COND ${3:calccondition}
-    DBC_FILE ${4:LibName}
     DBC_TARGET ${5:indexjoin}
     DBC_MAP ${6:mapname}
 ```
@@ -250,9 +249,42 @@ SCR_NXT_MSG IF ${2:calccondition} ${3:Message}
 SCR_NEXT_MAP ${6:mapPosting}
 ```
 
-**25 AP DBCLC - ap_dbclc**
+**25 ADD DBCLC - ap_dbclc**
 ```
-DO_LIB ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:ADD|UPDATE}, DMAP ${5:mapnyaapa});
+DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:ADD}, DFILE ${3:namafile}, DMAP ${4:mapnyaapa});
+```
+
+**26 TRANS**
+```
+"IMAGE(${1:trans})",
+		"|_______________|",
+		"",
+		"FIELD(${1:trans})",
+		"fieldname      NOCHANGE         1",
+		"",
+		"CALCS()",
+      		"${2:calccondition}",
+		"",
+		"SUBFILE(${1:trans})",
+		"SFL_LINES(${2:5})",
+		"SFL_COND ${4:calccondition}",
+		"SFL_SELECT ${5:calcselect}",
+		"SFL_TARGET ${6:namaindex}"
+```
+
+**27 UPD DBCLC - ap_dbclc**
+```
+DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:UPDATE}, DTARGET ${3:indexname}, DMAP ${4:mapnyaapa});
+```
+
+**28 MAPMAP DBCLC - ap_dbclc**
+```
+DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:MAPMAP}, DMAP ${3:mapnyaapa});
+```
+
+**29 SCANSCAN DBCLC - ap_dbclc**
+```
+DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:SCANSCAN}, DTARGET ${3:indexname}, DLTARGET ${4:indexname}, DBC_SUM_MAP ${5:mapnyaapa});
 ```
 
 ## Kustomisasi Warna (Opsional)

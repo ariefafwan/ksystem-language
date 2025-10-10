@@ -120,18 +120,42 @@
     "description": "PERMIT block for permissions"
   },
 
-  "ap_dbclc Template": {
-    "prefix": "ap_dbclc",
+  "ap_dbclc UPDATE Template": {
+    "prefix": "upd",
     "body": [
-      "DO_LIB ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:ADD|UPDATE}, DMAP ${5:mapnyaapa});"
+      "DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:UPDATE}, DTARGET ${3:indexname}, DMAP ${4:mapnyaapa});"
     ],
-    "description": "ap_dbclc template for spcalcs"
+    "description": "ap_dbclc upd template for spcalcs"
+  },
+
+  "ap_dbclc ADD Template": {
+    "prefix": "add",
+    "body": [
+      "DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:ADD}, DFILE ${3:namafile}, DMAP ${4:mapnyaapa});"
+    ],
+    "description": "ap_dbclc add template for spcalcs"
+  },
+
+  "ap_dbclc MAPMAP Template": {
+    "prefix": "mapmap",
+    "body": [
+      "DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:MAPMAP}, DMAP ${3:mapnyaapa});"
+    ],
+    "description": "ap_dbclc mapmap template for spcalcs"
+  },
+
+  "ap_dbclc SCANSCAN Template": {
+    "prefix": "scanscan",
+    "body": [
+      "DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:SCANSCAN}, DTARGET ${3:indexname}, DLTARGET ${4:indexname}, DBC_SUM_MAP ${5:mapnyaapa});"
+    ],
+    "description": "ap_dbclc scanscan template for spcalcs"
   },
 
   "ap_nxpst Template": {
     "prefix": "ap_nxpst",
     "body": [
-      "DO_LIB ap_nxpst(${1:lscr}, ${2:lmapposting}"
+      "DO_LIB   ap_nxpst(${1:lscr}, ${2:lmapposting})"
     ]
   },
 
@@ -140,7 +164,7 @@
     "body": [
       "LOCAL",
       "PGM_FIELDS",
-      "${1:varname} ${2:STRING} ${3:panjang}"
+      "${1:varname}     ${2:STRING}     ${3:panjang}"
     ],
     "description": "LOCAL variables declaration"
   },
@@ -148,7 +172,7 @@
   "Local 1 vars": {
     "prefix": "lvar",
     "body": [
-      "${1:varname} ${2:STRING} ${3:panjang}"
+      "${1:varname}     ${2:STRING}     ${3:21}"
     ]
   },
 
@@ -156,7 +180,7 @@
     "prefix": "field",
     "body": [
       "FIELD(${1:master})",
-      "${2:FieldName} ${3:NONE} ${4:INPUTRI|RI|NONE} ${5:1}"
+      "${2:FieldName}   ${3:INPUTRI}    ${5:1}"
     ]
   },
 
@@ -164,7 +188,7 @@
     "prefix": "def",
     "body": [
       "DEFAULT(${1:master})",
-      "        ${2:FieldName} INIT ${3:DefaultValue}"
+      "${2:FieldName}           INIT            ${3:DefaultValue}"
     ],
     "description": "DEFAULT block to set default values"
   },
@@ -213,10 +237,10 @@
     "prefix": "dbcalc",
     "body": [
       "DBCALCS(${1:DbcalcName})",
-      "         DBC_COMMAND ${2:ADD|UPDATE|DELETE|JOIN|MAPMAP|JOIN_LAST_SFL}",
-      "         DBC_COND ${3:calccondition}",
-      "         DBC_TARGET ${5:indexjoin}",
-      "         DBC_MAP ${6:mapname}"
+      "        DBC_COMMAND ${2:JOIN}",
+      "        DBC_COND ${3:calccondition}",
+      "        DBC_TARGET ${5:indexjoin}",
+      "        DBC_MAP ${6:mapname}"
     ],
     "description": "DBCALCS block"
   },
@@ -271,6 +295,26 @@
       "${6:RT_XLSX|RT_HTML|RT_PDF}"
     ],
     "description": "RTREE block for laporan"
+  },
+
+  "Trans": {
+	"prefix": "trans",
+	"body": [
+		"IMAGE(${1:trans})",
+		"|_______________|",
+		"",
+		"FIELD(${1:trans})",
+		"fieldname      NOCHANGE         1",
+		"",
+		"CALCS()",
+      		"${2:calccondition}",
+		"",
+		"SUBFILE(${1:trans})",
+		"SFL_LINES(${2:5})",
+		"SFL_COND ${4:calccondition}",
+		"SFL_SELECT ${5:calcselect}",
+		"SFL_TARGET ${6:namaindex}"
+	]
   },
 
   "Block Comment": {
