@@ -48,7 +48,7 @@
     "prefix": "map",
     "body": [
       "MAP(${1:MapName})",
-      "${2:FieldORCalcs}       ${3:TargetField}        ${4:REPLACE}"
+      "${2:FieldORCalcs}    ${3:TargetField}     ${4:REPLACE}"
     ],
     "description": "MAP block with source and target fields"
   },
@@ -57,31 +57,24 @@
     "prefix": "calc",
     "body": [
       "CALCS()",
-      "${1:CalcName}"
+      "${1:calcName}"
     ],
     "description": "CALCS block"
-  },
-
-  "Hook After Input (DO_MAP)": {
-    "prefix": "hookmap",
-    "body": [
-      "AFTER_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}"
-    ],
-    "description": "HOOKS rule AFTER_INPUT with DO_MAP SHOW"
   },
 
   "Hook After Input (DO_LIB)": {
     "prefix": "hooklib",
     "body": [
-      "AFTER_INPUT cur_field=${1:FieldName} DO_LIB ${2:LibName}(${3:params})"
+      "AFTER_INPUT      cur_field=${1:FieldName}          DO_LIB ${2:LibName}(${3:params})"
     ],
     "description": "HOOKS rule AFTER_INPUT with DO_LIB"
   },
 
   "Hook Before Input (DO_MAP)": {
-    "prefix": "bmap",
+    "prefix": "hooks",
     "body": [
-      "BEFORE_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}"
+      "HOOKS(master)",
+      "BEFORE_INPUT     cur_field=${1:FieldName}          DO_MAP SHOW ${2:MapName}"
     ],
     "description": "HOOKS rule BEFORE_INPUT with DO_MAP SHOW"
   },
@@ -89,24 +82,24 @@
   "After Input Hooks": {
     "prefix": "after_",
     "body": [
-      "AFTER_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}"
+      "AFTER_INPUT      cur_field=${1:FieldName}          DO_MAP SHOW ${2:MapName}"
     ]
   },
 
   "Before Input Hooks": {
     "prefix": "before_",
     "body": [
-      "BEFORE_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}"
+      "BEFORE_INPUT     cur_field=${1:FieldName}          DO_MAP SHOW ${2:MapName}"
     ]
   },
 
   "Hook Condition Example": {
     "prefix": "hookif",
     "body": [
-      "AFTER_INPUT cur_field=${1:FieldName} DO_MAP SHOW ${2:MapName}",
-      "    IF ${3:condition}",
-      "    ELSE HKCURSOR STAY",
-      "    HKMSG ${4:Message}"
+      "AFTER_INPUT      cur_field=${1:FieldName}          DO_MAP SHOW",
+      "                 IF ${3:condition} ${2:MapName}",
+      "                 ELSE HKCURSOR STAY",
+      "                 HKMSG ${4:Message}"
     ],
     "description": "HOOKS example with IF/ELSE and HKMSG"
   },
@@ -115,7 +108,7 @@
     "prefix": "permit",
     "body": [
       "PERMIT(${1:master})",
-      "    ${2:PMT_ADD_COND} ${3:CalcName}"
+      "    ${2:PMT_ADD_COND} ${3:calcName}"
     ],
     "description": "PERMIT block for permissions"
   },
@@ -153,9 +146,16 @@
   },
 
   "ap_nxpst Template": {
-    "prefix": "ap_nxpst",
+    "prefix": "nxpst",
     "body": [
       "DO_LIB   ap_nxpst(${1:lscr}, ${2:lmapposting})"
+    ]
+  },
+
+  "ap_ambts Template": {
+    "prefix": "ambts",
+    "body": [
+      "DO_LIB   ap_ambts(gv_INPG,${1:lrmd},${2:lbts1},lbts2,lbts3,&${3:lnilai1},&lnilai2,&lnilai3,&lhasilstr1,&lhasilstr2);"
     ]
   },
 
@@ -188,7 +188,7 @@
     "prefix": "def",
     "body": [
       "DEFAULT(${1:master})",
-      "${2:FieldName}           INIT            ${3:DefaultValue}"
+      "${2:FieldName}    INIT           ${3:DefaultValue}"
     ],
     "description": "DEFAULT block to set default values"
   },
@@ -227,8 +227,8 @@
   "SPCALCS Block": {
     "prefix": "spcalc",
     "body": [
-      "SPCALCS(${1:SpcalcName})",
-      "         ${2:dbcalcname}"
+      "SPCALCS(${1:spmaster})",
+      "        DO_LIB   ap_dbclc(DNAME ${1:dname}, DCOMMAND ${2:MAPMAP}, DMAP ${3:mapnyaapa});"
     ],
     "description": "SPCALCS block"
   },
@@ -237,10 +237,9 @@
     "prefix": "dbcalc",
     "body": [
       "DBCALCS(${1:DbcalcName})",
-      "        DBC_COMMAND ${2:JOIN}",
-      "        DBC_COND ${3:calccondition}",
-      "        DBC_TARGET ${5:indexjoin}",
-      "        DBC_MAP ${6:mapname}"
+      "        DBC_COMMAND    ${2:JOIN}",
+      "        DBC_TARGET     ${5:indexjoin}",
+      "        DBC_MAP        ${6:mapname}"
     ],
     "description": "DBCALCS block"
   },
@@ -251,7 +250,7 @@
       "SCR_UPLFLD   ${1:fieldname}",
       "SCR_UPLFLD2  ${2:fieldname2}",
       "SCR_UPL_DIRFLD  ${3:dirfieldname}",
-      "SCR_UPLFLD_DBCALCS  ${4:DbcalcName}",
+      "SCR_UPLFLD_DBCALCS  ${4:dbcalcName}",
       "SCR_UPL_DELCOND ${5:calccondition}"
     ],
     "description": "SCR_UPL block"
@@ -260,9 +259,8 @@
   "POSTING Block": {
     "prefix": "post",
     "body": [
-      "POSTING(${1:master|trans})",
-      "         ${2:PST_COMMAND} ${3:SpcalcName}",
-      "         ${8:PST_COND} ${9:calcond}"
+      "POSTING(${1:master})",
+      "        ${2:PST_COMMAND} ${1:spmaster}"
     ],
     "description": "POSTING block"
   },
@@ -307,7 +305,7 @@
 		"fieldname      NOCHANGE         1",
 		"",
 		"CALCS()",
-      		"${2:calccondition}",
+    "${2:calccondition}",
 		"",
 		"SUBFILE(${1:trans})",
 		"SFL_LINES(${2:5})",
